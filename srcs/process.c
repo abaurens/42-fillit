@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/24 14:49:57 by abaurens          #+#    #+#             */
-/*   Updated: 2018/11/29 04:56:52 by abaurens         ###   ########.fr       */
+/*   Updated: 2018/11/29 18:36:22 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,42 @@
 #include "fillit.h"
 #include "libft.h"
 
-char		render_map(t_map *map, int yy, t_int64 p, const int j)
+#include <unistd.h>
+
+
+static void	ft_putbin(t_int64 val, int len, int padd)
+{
+	char	c;
+
+	if (len <= 0)
+		len = 1;
+	if (val / 2 != 0 || (len - 1) > 0)
+		ft_putbin(val / 2, len - 1, padd);
+	c = val % 2 + '0';
+	if ((len - 1) > 0 && (len - 1) % padd == 0)
+		write(1, " ", 1);
+	if (c == '1')
+		write(1, "\e[32;40m", strlen("\e[32;40m"));
+	write(1, &c, 1);
+	write(1, " ", 1);
+	if (c == '1')
+		write(1, "\e[0m", strlen("\e[0m"));
+}
+
+void		print_map(t_int16 map[16])
+{
+	int		i;
+
+	i = 0;
+	while (i < 16)
+	{
+		ft_putbin(map[i], 16, 16);
+		write(1, "\n", 1);
+		i++;
+	}
+}
+
+static char	render_map(t_map *map, int yy, t_int64 p, const int j)
 {
 	int		y;
 	int		x;
@@ -23,8 +58,8 @@ char		render_map(t_map *map, int yy, t_int64 p, const int j)
 
 	y = -1;
 	len = ((map->size + 1) * map->size);
-	if (j + 1 == PIECE_COUNT)
-		print_map(map->map);
+	/*if (j + 1 == PIECE_COUNT)
+		print_map(map->map);*/
 	if (!map->res && !(map->res = ft_memalloc(sizeof(char) * (len + 1))))
 		return (-1);
 	while (++y < map->size)
@@ -42,7 +77,7 @@ char		render_map(t_map *map, int yy, t_int64 p, const int j)
 	return (1);
 }
 
-char		btrk(t_map *map, const int size, const int j)
+static char	btrk(t_map *map, const int size, const int j)
 {
 	int		x;
 	int		y;
@@ -50,6 +85,8 @@ char		btrk(t_map *map, const int size, const int j)
 	t_int64	*frag;
 
 	y = -1;
+	print_map(map->map);
+	write(1, "\n", 1);
 	while (++y < size - (map->pieces[j].h - 1) && (x = -1))
 	{
 		p = map->pieces[j].val;
@@ -69,6 +106,36 @@ char		btrk(t_map *map, const int size, const int j)
 	return (0);
 }
 
+static void	debug_print_piece(t_piece *piece, int padd)
+{
+	t_test	p;
+	int		l;
+
+	p.all = piece->val;
+	l = -1;
+	printf("=============%2d,%2d=============\n", piece->w, piece->h);
+	while (++l < padd)
+		write(1, "\t", 1);
+	ft_putbin(p.quar[0], 16, 16);
+	write(1, "\n", 1);
+	l = -1;
+	while (++l < padd)
+		write(1, "\t", 1);
+	ft_putbin(p.quar[1], 16, 16);
+	write(1, "\n", 1);
+	l = -1;
+	while (++l < padd)
+		write(1, "\t", 1);
+	ft_putbin(p.quar[2], 16, 16);
+	write(1, "\n", 1);
+	l = -1;
+	while (++l < padd)
+		write(1, "\t", 1);
+	ft_putbin(p.quar[3], 16, 16);
+	write(1, "\n", 1);
+	printf("===============================\n");
+}
+
 char		process(t_map *map)
 {
 	char	lp;
@@ -86,6 +153,87 @@ char		process(t_map *map)
 	return (0);
 }
 
+t_piece		convert_piece(const char tab[4][4])
+{
+	t_vec2	pos;
+	t_int64	val;
+	t_piece	ret;
+
+	pos.y = 4;
+	ft_bzero(&ret, sizeof(ret));
+	while (--pos.y >= 0 && (pos.x = -1))
+	{
+		while (++pos.x < 4 && ((ret.val <<= 1) || 1))
+			if (tab[pos.y][pos.x] == '#')
+				ret.val |= 1;
+		ret.val <<= (16 - 4);
+	}
+	while ((ret.val & 0b1111111111111111) == 0)
+		ret.val >>= 16;
+	while ((ret.val & MASK) == 0)
+		ret.val <<= 1;
+	val = ret.val;
+	while ((val & (MASK >> ret.w)) != 0)
+		ret.w++;
+	val = ret.val;
+	while (val >> (ret.h * 16) != 0)
+		ret.h++;
+	return (ret);
+}
+
+const char	g_pieces[PIECE_COUNT][4][4] =
+{
+	{
+		"....",
+		"##..",
+		".##.",
+		"...."
+	},
+	{
+		"....",
+		".##.",
+		".##.",
+		"...."
+	},
+	{
+		"...",
+		"#...",
+		"#...",
+		"##.."
+	},
+	{
+		"....",
+		"...#",
+		"..##",
+		"...#"
+	},
+	{
+		"....",
+		"....",
+		"....",
+		"####"
+	}
+};
+
+int			main(void)
+{
+	int		i;
+	t_map	map;
+	t_piece	p;
+
+	i = 0;
+	while (i < PIECE_COUNT)
+	{
+		map.pieces[i] = convert_piece(g_pieces[i]);
+		/*debug_print_piece(&p, 0);*/
+		/*write(1, "\n\n", 2);*/
+		i++;
+	}
+	process(&map);
+	return (0);
+}
+
+/*
 int			main(void)
 {
 	int		i;
@@ -111,3 +259,4 @@ int			main(void)
 		map.map[i++] = t;
 	return (process(&map));
 }
+*/

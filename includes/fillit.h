@@ -6,17 +6,15 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/27 16:36:20 by abaurens          #+#    #+#             */
-/*   Updated: 2018/11/29 04:57:43 by abaurens         ###   ########.fr       */
+/*   Updated: 2018/11/29 18:31:38 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILLIT_H
 # define FILLIT_H
 
-# define DEBUG_MODE
-# define FILLIT_DEBUG 0
-# define PIECE_COUNT 4
-# define MASK 0b0000000000000001000000000000000100000000000000010000000000000001
+# define PIECE_COUNT 5
+# define MASK 0b1000000000000000100000000000000010000000000000001000000000000000
 
 # include <string.h>
 
@@ -41,7 +39,7 @@ typedef struct	s_pieces
 typedef struct	s_map
 {
 	t_int16		map[16];
-	t_piece		pieces[26];
+	t_piece		pieces[PIECE_COUNT];
 	char		*res;
 	int			size;
 }				t_map;
@@ -53,12 +51,6 @@ typedef union	u_test
 	t_int32		half[2];
 	t_int64		all;
 }				t_test;
-
-# ifdef DEBUG_MODE
-void			ft_putbin(t_int64 val, int len, int padd);
-void			debug_print_piece(t_int64 piece, int padd);
-void			print_map(t_int16 map[16]);
-# endif
 
 char			process(t_map *map);
 
