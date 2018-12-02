@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/27 16:36:20 by abaurens          #+#    #+#             */
-/*   Updated: 2018/12/02 09:37:41 by abaurens         ###   ########.fr       */
+/*   Updated: 2018/12/02 16:18:28 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@
 
 # include <string.h>
 
-typedef unsigned char	t_int8;
 typedef unsigned short	t_int16;
-typedef unsigned int	t_int32;
 typedef unsigned long	t_int64;
 
 typedef struct	s_vec2
@@ -48,14 +46,11 @@ typedef struct	s_map
 	int			size;
 }				t_map;
 
-typedef union	u_test
-{
-	t_int8		byte[8];
-	t_int16		quar[4];
-	t_int32		half[2];
-	t_int64		all;
-}				t_test;
-
+t_int64			up_left(t_int64 piece_val);
+t_piece			*reset_piece(t_piece *piece);
+t_piece			convert_piece(const char tab[4][4]);
 char			process(t_map *map);
+long double		ft_sqrt(long double nb);
+char			render_map(t_map *map, t_piece *p, const int j);
 
 #endif
