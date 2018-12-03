@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/27 16:36:20 by abaurens          #+#    #+#             */
-/*   Updated: 2018/12/03 15:51:58 by abaurens         ###   ########.fr       */
+/*   Updated: 2018/12/03 16:05:28 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ typedef struct	s_vec2
 }				t_vec2;
 
 /*
-**	x, y, w and h are only using 4 bits.
-**	Together they use 16 bits of the same 32 bit int
+**	x, y, w and h are only using 8 bits.
+**	Together they use a single 32 bit int
 **	so sizeof(t_piece) = (8 + 8 + 4) = 20
 */
 typedef struct	s_piece
 {
-	int			x : 4;
-	int			y : 4;
-	int			w : 4;
-	int			h : 4;
+	int			x : 8;
+	int			y : 8;
+	int			w : 8;
+	int			h : 8;
 	t_int64		val;
 	t_int64		ref;
 }				t_piece;
@@ -54,8 +54,8 @@ typedef struct	s_map
 {
 	t_int16		map[16];
 	t_piece		pieces[26];
-	int			piece_count : 6;
-	int			size : 4;
+	int			piece_count : 8;
+	int			size : 8;
 	char		*res;
 }				t_map;
 
