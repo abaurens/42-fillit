@@ -6,13 +6,12 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 15:41:14 by abaurens          #+#    #+#             */
-/*   Updated: 2018/12/02 16:19:36 by abaurens         ###   ########.fr       */
+/*   Updated: 2018/12/03 15:38:08 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "fillit.h"
-#include "libft.h"
 
 static char		*create_map(const int size)
 {
@@ -22,11 +21,12 @@ static char		*create_map(const int size)
 
 	y = -1;
 	len = ((size + 1) * size);
-	if (!(ret = malloc(sizeof(char) * (len + 1))))
+	if (!(ret = malloc(sizeof(char) * len)))
 		return (NULL);
 	ret[len] = 0;
-	ft_memset(ret, '.', len);
-	while (++y < size)
+	while (++y < len)
+		ret[y] = '.';
+	while (--y >= 0)
 		ret[size + (y * (size + 1))] = '\n';
 	return (ret);
 }

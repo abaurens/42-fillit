@@ -6,14 +6,13 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 22:02:22 by abaurens          #+#    #+#             */
-/*   Updated: 2018/12/03 01:39:19 by abaurens         ###   ########.fr       */
+/*   Updated: 2018/12/03 15:38:32 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <fcntl.h>
 #include "fillit.h"
-#include "libft.h"
 
 int			print_usage(void)
 {
@@ -79,7 +78,8 @@ static int	read_piece(const int fd, char tab[4][4])
 				return (ERROR);
 			i++;
 		}
-		ft_memcpy(tab[line], buffer, 4);
+		while (--i >= 0)
+			tab[line][i] = buffer[i];
 		line++;
 	}
 	if (line < 4 || len < 0)

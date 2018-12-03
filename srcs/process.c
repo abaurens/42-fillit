@@ -6,14 +6,13 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/24 14:49:57 by abaurens          #+#    #+#             */
-/*   Updated: 2018/12/03 01:30:21 by abaurens         ###   ########.fr       */
+/*   Updated: 2018/12/03 15:38:40 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 #include "fillit.h"
-#include "libft.h"
 
 static void		optimize_future(t_piece *pieces, const int size)
 {
@@ -52,7 +51,7 @@ static char		btrk(t_map *map, const int size, const int j)
 			{
 				*frag ^= map->pieces[j].val;
 				optimize_future(&map->pieces[j], map->size);
-				if (map->pieces[j + 1].val == 0 || btrk(map, size, j + 1))
+				if (j + 1 >= map->piece_count || btrk(map, size, j + 1))
 					return (render_map(map, &map->pieces[j], j));
 				reset_piece(&map->pieces[j + 1]);
 				*frag ^= map->pieces[j].val;
@@ -106,7 +105,6 @@ int				main (int ac, char const *const *av)
 {
 	t_map		map;
 
-	ft_bzero(&map.pieces, sizeof(t_piece) * 27);
 	if (ac != 2)
 		return (print_usage());
 	if (parse_file(av[1], &map) == SUCCESS)
