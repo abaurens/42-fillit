@@ -6,14 +6,14 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 15:36:47 by abaurens          #+#    #+#             */
-/*   Updated: 2018/12/02 16:19:34 by abaurens         ###   ########.fr       */
+/*   Updated: 2018/12/02 23:50:07 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "libft.h"
 
-t_int64		up_left(t_int64 piece_val)
+static t_int64	up_left(t_int64 piece_val)
 {
 	if (piece_val == 0)
 		return (piece_val);
@@ -24,7 +24,7 @@ t_int64		up_left(t_int64 piece_val)
 	return (piece_val);
 }
 
-t_piece		*reset_piece(t_piece *piece)
+t_piece			*reset_piece(t_piece *piece)
 {
 	if (piece)
 	{
@@ -35,10 +35,10 @@ t_piece		*reset_piece(t_piece *piece)
 	return (piece);
 }
 
-t_piece		convert_piece(const char tab[4][4])
+t_piece			convert_piece(const char tab[4][4])
 {
-	t_vec2	pos;
-	t_piece	ret;
+	t_vec2		pos;
+	t_piece		ret;
 
 	pos.y = 4;
 	ft_bzero(&ret, sizeof(ret));

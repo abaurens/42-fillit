@@ -6,7 +6,7 @@
 #    By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/27 16:23:33 by abaurens          #+#    #+#              #
-#    Updated: 2018/12/02 16:19:14 by abaurens         ###   ########.fr        #
+#    Updated: 2018/12/03 00:52:12 by abaurens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,10 @@ OBJD        =   objs
 SRC         =   process.c		\
 				ft_sqrt.c		\
 				post_parse.c	\
+				simple_parse.c	\
 				post_process.c
 
-CFLAGS      +=  -I./includes -Wall -Wextra -Werror
+CFLAGS      +=  -I./includes -g -Wall -Wextra -Werror
 LIB_DIR     :=  $(shell find . -type d -name '$(LIB)')
 
 OBJ         :=  $(addprefix $(OBJD)/,$(SRC:.c=.o))
