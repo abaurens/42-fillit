@@ -6,7 +6,7 @@
 /*   By: abaurens <abaurens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/27 16:36:20 by abaurens          #+#    #+#             */
-/*   Updated: 2018/12/03 15:49:15 by abaurens         ###   ########.fr       */
+/*   Updated: 2018/12/03 15:51:58 by abaurens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 typedef unsigned short	t_int16;
 typedef unsigned long	t_int64;
 
+/*
+**	x and y are stored on the same 32 bit int
+**	because they only take 16 bits each.
+**	so sizeof(t_vec2) = 4
+*/
 typedef struct	s_vec2
 {
 	int			x : 16;
@@ -30,7 +35,7 @@ typedef struct	s_vec2
 /*
 **	x, y, w and h are only using 4 bits.
 **	Together they use 16 bits of the same 32 bit int
-**	so sizeof(t_piece) is (8 + 8 + 4) = 20
+**	so sizeof(t_piece) = (8 + 8 + 4) = 20
 */
 typedef struct	s_piece
 {
